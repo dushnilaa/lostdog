@@ -1,0 +1,8 @@
+- mysql_path: mysql://admin:admin@127.0.0.1:3306/test
+  name_table: lostdog
+
+
+- sleep_sec: 5
+#  proxies: ['185.252.171.177:8800', '193.47.238.102:8800']
+  proxies: []
+

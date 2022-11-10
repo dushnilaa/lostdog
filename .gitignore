@@ -1,0 +1,11 @@
+/data/
+/venv/
+/__pycache__/
+/.idea/
+__pycache__/
+
+/parser_files/
+
+test.py
+
+note
