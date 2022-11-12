@@ -4,7 +4,7 @@
 /.idea/
 __pycache__/
 
-/parser_files/
+#/parser_files/
 
 test.py
 
