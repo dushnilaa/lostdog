@@ -41,6 +41,8 @@ class Parser:
     def number_phone(self, part_phone, proxies=None):
         start_url = f'https://www.lost-dog.org/en-us/item_phone_view.php?{part_phone}'
         request = requests.get(url=start_url, proxies=proxies).text
+        if request == '':
+            return None
         time.sleep(self.sleep_sec)
         return request
 
@@ -84,6 +86,9 @@ class Parser:
         find_item = re.findall(f"id_item={ws_id}&h=\S+',", request)
         part_link = find_item[0].replace("',", '')
         phone = self.number_phone(part_link, proxies=proxies)
+        if phone is None:
+            print(f'No profile number {start_url}')
+            return
 
         dict_result = {
             'status': 0,
