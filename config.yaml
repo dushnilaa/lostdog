@@ -1,10 +1,10 @@
 - mysql_path: mysql://admin:admin@127.0.0.1:3306/test
-  name_table: lostdog
+  name_table: parsed_pets
 
 
-- sleep_sec: 30
-#  proxies: ['185.252.171.177:8800', '193.47.238.102:8800']
-  proxies: []
+- sleep_sec: 10
+  proxies: ['185.252.171.177:8800', '193.47.238.102:8800']
+#  proxies: []
   start_date: 2592000
   # при каждодневном парсинге, необходимо закомментировать прошлую и расскоментировать нижнюю строку
   #  start_date: 129600

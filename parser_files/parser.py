@@ -3,6 +3,7 @@ import re
 import sys
 import time
 from datetime import datetime
+import random
 
 import requests
 import yaml
@@ -37,14 +38,13 @@ class Parser:
             return None
         return ' '.join(res)
 
-    @classmethod
-    def number_phone(cls, part_phone):
+    def number_phone(self, part_phone, proxies=None):
         start_url = f'https://www.lost-dog.org/en-us/item_phone_view.php?{part_phone}'
-        request = requests.get(url=start_url).text
+        request = requests.get(url=start_url, proxies=proxies).text
+        time.sleep(self.sleep_sec)
         return request
 
     def parser_profile(self, start_url, headers=None, proxies=None):
-
         if headers:
             headers = {'User-Agent': UserAgent().chrome}
         request = requests.get(url=start_url, headers=headers, proxies=proxies).text
@@ -83,7 +83,7 @@ class Parser:
         ws_id = start_url.split('/')[-1]
         find_item = re.findall(f"id_item={ws_id}&h=\S+',", request)
         part_link = find_item[0].replace("',", '')
-        phone = self.number_phone(part_link)
+        phone = self.number_phone(part_link, proxies=proxies)
 
         dict_result = {
             'status': 0,
@@ -109,6 +109,7 @@ class Parser:
 
         count = 1
         while True:
+
             start_url = f'https://www.lost-dog.org/en-us/search/us/{count}'
             request = requests.get(url=start_url, headers=headers, proxies=proxies).text
 
@@ -118,7 +119,13 @@ class Parser:
                                '@class="note"]//text()')[-1]
             print(links)
             for link in links:
-                self.parser_profile(link)
+                if self.proxies:
+                    proxy = random.choice(self.proxies)
+                    proxies = {
+                        "http": f"http://{proxy}/",
+                        "https": f"http://{proxy}/"
+                    }
+                self.parser_profile(link, proxies=proxies)
                 time.sleep(self.sleep_sec)
 
             dt = parse(dates)
